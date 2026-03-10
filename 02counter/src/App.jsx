@@ -10,8 +10,12 @@ function App() {
   const addValue = () => {
     console.log("add value", counter);
     // counter = counter + 1;
-    if (counter < 20) {
+    if (counter < 100) {
       setCounter(counter + 1);
+      setCounter((prevCounter) => prevCounter + 1);
+      setCounter((prevCounter) => prevCounter + 1);
+      setCounter((prevCounter) => prevCounter + 1);
+      setCounter((prevCounter) => prevCounter + 1);
     }
   };
 
@@ -27,7 +31,7 @@ function App() {
       <h2>Counter value: {counter}</h2>
       <br />
       <button onClick={addValue}>add Value</button>
-      <br />
+      <br /> <br />
       <button onClick={removeValue}>remove Value</button>
       <footer>value:{counter}</footer>
     </>

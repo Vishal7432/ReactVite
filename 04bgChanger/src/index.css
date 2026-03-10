@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* You can add your custom styles here */
+body {
+  @apply bg-gray-100 text-gray-800;
+  
+}
+
+/* Example of a custom class */
+.bg-custom {
+  background-image: url("./assets/custom-bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
