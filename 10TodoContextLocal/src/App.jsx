@@ -1,22 +1,66 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { TodoProvider } from "./Contexts/TodoContext";
+import TodoForm from "./Components/TodoForm";
+import TodoItems from "./Components/TodoItems";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = JSON.parse(localStorage.getItem("todos"));
+    return savedTodos && savedTodos.length > 0 ? savedTodos : [];
+  });
+
+  const addTodo = (todo) => {
+    setTodos((prev) => [...prev, { id: Date.now(), ...todo }]);
+  };
+
+  const updatedTodo = (id, newTodo) => {
+    setTodos((prev) =>
+      prev.map((prevTodo) => (prevTodo.id === id ? newTodo : prevTodo)),
+    );
+  };
+
+  const deleteTodo = (id) => {
+    setTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== id));
+  };
+
+  const toggleTodo = (id) => {
+    setTodos((prev) =>
+      prev.map((prevTodo) => {
+        if (prevTodo.id === id) {
+          return { ...prevTodo, completed: !prevTodo.completed };
+        } else {
+          return prevTodo;
+        }
+      }),
+    );
+  };
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <h1 className="text-3xl font-bold underline text-red-500">
-          Hello world!
-        </h1>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-          onClick={() => setCount(count + 1)}
-        >
-          Count is {count}
-        </button>
+    <TodoProvider
+      value={{ todos, addTodo, updatedTodo, deleteTodo, toggleTodo }}
+    >
+      <div className="bg-[#172842] min-h-screen py-8">
+        <div className="w-full max-w-2xl mx-auto shadow-md rounded-lg px-4 py-3 text-white">
+          <h1 className="text-2xl font-bold text-center mb-8 mt-2">
+            Manage Your Todos
+          </h1>
+          <div className="mb-4">
+            {/* Todo form goes here */}
+            <TodoForm />
+          </div>
+          <div className="flex flex-wrap gap-y-3">
+            {/*Loop and Add TodoItem here */}
+            {todos.map((todo) => (
+              <TodoItems key={todo.id} todo={todo} className="w-full" />
+            ))}
+          </div>
+        </div>
       </div>
-    </>
+    </TodoProvider>
   );
 }
 
