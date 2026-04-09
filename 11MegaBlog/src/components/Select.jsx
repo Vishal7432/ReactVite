@@ -1,13 +1,9 @@
-import React from "react";
-import { useId, forwardRef } from "react";
+import React, { useId } from "react";
 
-const Input = forwardRef(function Input(
-  { label, type = "text", className = "", ...props },
-  ref,
-) {
+function Select({ option, label, className = "", ...props }, ref) {
   const id = useId();
   return (
-    <div className="w-full">
+    <div>
       {label && (
         <label
           htmlFor={id}
@@ -16,15 +12,20 @@ const Input = forwardRef(function Input(
           {label}
         </label>
       )}
-      <input
-        type={type}
+      <select
         className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${className}`}
         ref={ref}
         {...props}
         id={id}
-      />
+      >
+        {option?.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
     </div>
   );
-});
+}
 
-export default Input;
+export default React.forwardRef(Select);
