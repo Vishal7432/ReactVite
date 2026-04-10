@@ -1,0 +1,25 @@
+import React from "react";
+import { useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { Buttom, Input, Select, RTE } from "../index";
+import appwriteService from "../../appwrite/Config";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+function PostForm({ post }) {
+  const { register, handleSunmit, watch, setValue, control, getValue } =
+    useForm({
+      defaultValues: {
+        title: post?.title || "",
+        slug: post?.slug || "",
+        content: post?.content || "",
+        status: post?.status || "active",
+      },
+    });
+
+  const navigate = useNavigate();
+  const userData = useSelector((state) => state.user.userData);
+  return <div>PostForm</div>;
+}
+
+export default PostForm;
